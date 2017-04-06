@@ -1,0 +1,23 @@
+{
+  "parser": "babel-eslint",
+  "extends": "eslint:recommended",
+  "env": {"node": true},
+  "rules": {
+    "indent": ["error", 2, {"SwitchCase": 1}],
+    "no-console": "off",
+    "no-mixed-spaces-and-tabs": "error",
+    "no-restricted-globals": ["error",
+      // window (browser)
+      "alert", "blur", "confirm", "event", "fetch", "find", "focus", "history",
+      "length", "location", "name", "navigator", "open", "parent", "print",
+      "prompt", "scroll", "self", "status", "stop", "top",
+      // global (node)
+      "root"
+    ],
+    "no-shadow-restricted-names": "error",
+    "no-unused-vars": ["error", {"argsIgnorePattern": "^_", "varsIgnorePattern": "^_"}]
+  },
+  "globals": {
+    "Promise": true
+  }
+}

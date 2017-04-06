@@ -1,0 +1,22 @@
+{
+  "name": "epdf",
+  "version": "0.0.1",
+  "description": "Render any URL to PDF using Electron",
+  "author": "Nelo Mitranim <me@mitranim.com>",
+  "main": "index.js",
+  "bin": {
+    "epdf": "bin/cli.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "del": "^2.2.2",
+    "electron": "^1.6.2",
+    "fpx": "^0.0.20",
+    "yargs": "^7.0.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.1",
+    "eslint": "^3.19.0",
+    "eslint_d": "^4.2.5"
+  }
+}
