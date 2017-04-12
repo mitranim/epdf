@@ -11,6 +11,12 @@ exports.render = render
 async function render (args) {
   let {out} = args
 
+  const {url, locale} = args
+
+  if (url && locale) {
+    args.url = `"${url}${url.indexOf('?') !== -1 ? '&' : '?'}locale=${locale}"`
+  }
+
   const useTmpFile = !out
 
   // We use a temp file instead of `stdout` because when exceeding a certain
