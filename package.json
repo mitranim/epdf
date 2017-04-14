@@ -1,6 +1,6 @@
 {
   "name": "epdf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Render any URL to PDF using Electron",
   "author": "Nelo Mitranim <me@mitranim.com>",
   "main": "index.js",
@@ -8,6 +8,11 @@
     "epdf": "bin/cli.js"
   },
   "license": "MIT",
+  "keywords": [
+    "pdf",
+    "html",
+    "electron"
+  ],
   "dependencies": {
     "del": "^2.2.2",
     "electron": "^1.6.2",
