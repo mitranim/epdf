@@ -1,6 +1,6 @@
 'use strict'
 
-const {url, out: filename, width, height, maxDelay, siteDelay, pageSize, printBackground, landscape} =
+const {url, out: filename, width, height, maxDelay, siteDelay, pageSize, printBackground, landscape, marginsType} =
   require('yargs')
   .option('url', {type: 'string', demand: true, describe: 'URL to render'})
   .option('out', {type: 'string', demand: true, describe: 'Output filename'})
@@ -11,6 +11,7 @@ const {url, out: filename, width, height, maxDelay, siteDelay, pageSize, printBa
   .option('pageSize', {type: 'string', default: 'A4', describe: 'Typographic page size'})
   .option('printBackground', {type: 'boolean', default: true})
   .option('landscape', {type: 'boolean', default: false, describe: 'Use landscape orientation'})
+  .option('marginsType', {type: 'number', default: 0, describe: 'Specifies the type of margins to use'})
   .argv
 
 const fs = require('fs')
@@ -23,7 +24,7 @@ const jobOptions = {maxDelay, siteDelay}
 
 const windowOptions = {show: false, width, height}
 
-const pdfOptions = {pageSize, printBackground, landscape}
+const pdfOptions = {pageSize, printBackground, landscape, marginsType}
 
 electron.app.once('ready', render)
 
