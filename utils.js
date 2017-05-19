@@ -3,92 +3,82 @@
 const fs = require('fs')
 const child_process = require('child_process')
 const mkdirp = require('mkdirp')
-const {slice, isFunction, isArray, isList, isString, validate} = require('fpx')
 
 exports.extend = extend
 function extend (...values) {
   return Object.assign({}, ...values)
 }
 
-exports.flushBy = flushBy
-function flushBy (values, fun) {
-  validate(isFunction, fun)
-  validate(isArray, values)
-  try {
-    while (values.length) {
-      fun.call(this, values.shift())
-    }
-  }
-  catch (err) {
-    flushBy.call(this, values, fun)
-    throw err
+class Future extends require('posterus').Future {
+  constructor () {
+    super(...arguments)
+    this.arrive = this.arrive.bind(this)
   }
 }
 
-exports.forceEach = forceEach
-function forceEach (values, fun, arg) {
-  validate(isFunction, fun)
-  if (isList(values)) {
-    flushBy.call(this, slice(values), fun, arg)
-  }
+exports.Future = Future
+
+exports.printToPDF = printToPDF
+function printToPDF (window, pdfOptions) {
+  return Future.init(future => {
+    window.webContents.printToPDF(pdfOptions, future.arrive)
+  })
+}
+
+exports.delay = delay
+function delay (time) {
+  return Future.init(future => after(time, future.arrive))
+}
+
+exports.after = after
+function after (delay, fun, ...args) {
+  return clearTimeout.bind(null, setTimeout(fun, delay, ...args))
 }
 
 exports.once = once
-function once (emitter, eventName, fun) {
-  validate(isFunction, emitter.once)
-  validate(isString, eventName)
-  validate(isFunction, fun)
+function once (emitter, eventName) {
+  return Future.init(future => {
+    function onEvent (value) {
+      future.arrive(null, value)
+    }
 
-  let pending = true
+    emitter.once(eventName, onEvent)
 
-  emitter.once(eventName, (...args) => {
-    if (pending) {
-      pending = false
-      fun(...args)
+    return function onDeinit () {
+      emitter.removeListener(eventName, onEvent)
     }
   })
-
-  return () => {
-    if (pending) {
-      pending = false
-      // Doesn't seem to work in Electron.
-      emitter.removeListener(eventName, fun)
-    }
-  }
-}
-
-exports.timer = timer
-function timer (delay, fun, ...args) {
-  return clearTimeout.bind(null, setTimeout(fun, delay, ...args))
 }
 
 exports.exec = exec
 function exec (cmd, options) {
-  return new Promise((resolve, reject) => {
-    child_process.exec(cmd, options, (err, stdout, stderr) => {
-      if (err) reject(Object.assign(err, {stdout, stderr, exec: true}))
-      else resolve({stdout, stderr})
+  return Future.init(future => {
+    const proc = child_process.exec(cmd, options, (error, stdout, stderr) => {
+      if (error) future.arrive(stderr.length ? stderr : error)
+      future.arrive(null, {stdout, stderr})
     })
+    return proc.kill.bind(proc)
   })
 }
 
 exports.readFile = readFile
 function readFile (filename, encoding) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filename, encoding, (err, buffer) => {
-      if (err) reject(err)
-      else resolve(buffer)
-    })
+  return Future.init(future => {
+    fs.readFile(filename, encoding, future.arrive)
+  })
+}
+
+exports.writeFile = writeFile
+function writeFile (filename, buffer) {
+  return Future.init(future => {
+    fs.writeFile(filename, buffer, future.arrive)
   })
 }
 
 exports.mkdir = mkdir
 function mkdir (path) {
-  return new Promise((resolve, reject) => {
-    mkdirp(path, (err, result) => {
-      if (err) reject(err)
-      else resolve(result)
-    })
+  return Future.init(future => {
+    mkdirp(path, future.arrive)
   })
 }
 

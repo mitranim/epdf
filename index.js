@@ -8,35 +8,37 @@ const {mkdir, exec, readFile, serialiseArgDict, extend} = require('./utils')
 const pdfModulePath = pt.join(__dirname, 'epdf.js')
 
 exports.render = render
-async function render (args) {
-  let {out} = args
+function render (args) {
+  return args.out ? renderToFile(args) : renderToStdout(args)
+}
 
-  const useTmpFile = !out
+function renderToFile (args) {
+  return exec(`${electronPath} ${pdfModulePath} ${serialiseArgDict(args)}`).mapResult(logExec)
+}
 
-  // We use a temp file instead of `stdout` because when exceeding a certain
-  // size, the `stdout` in the parent process gets bugged: it has the correct
-  // size, but reading from it produces duplicate data.
-  if (useTmpFile) {
-    const TMP_DIR = pt.join(require('os').tmpdir(), 'epdf')
-    out = pt.join(TMP_DIR, `${uuid()}.pdf`)
-    args = extend(args, {out})
-    await mkdir(TMP_DIR)
-  }
+function renderToStdout (args) {
+  const TMP_DIR = pt.join(require('os').tmpdir(), 'epdf')
+  const out = pt.join(TMP_DIR, `${uuid()}.pdf`)
+  args = extend(args, {out})
 
-  process.once('exit', cleanup)
+  // We use a temp file instead of `stdout` because when exceeding a certain size,
+  // the `stdout` in the parent process gets bugged: it has the correct size,
+  // but reading from it produces duplicate data.
+  return mkdir(TMP_DIR)
+    .mapResult(() => exec(`${electronPath} ${pdfModulePath} ${serialiseArgDict(args)}`))
+    .mapResult(logExec)
+    .mapResult(() => readFile(out))
+    .mapResult(result => {
+      del(out, {force: true}).catch(console.error.bind(console))
+      return result
+    })
+}
 
-  function cleanup () {
-    process.removeListener('exit', cleanup)
-    if (useTmpFile) del(out, {force: true}).catch(console.error.bind(console))
-  }
-
-  try {
-    const {stdout, stderr} = await exec(`${electronPath} ${pdfModulePath} ${serialiseArgDict(args)}`)
-    process.stdout.write(stdout)
-    process.stderr.write(stderr)
-    return readFile(out)
-  }
-  finally {
-    cleanup()
-  }
+// This contains yargs output and errors.
+// The result of rendering is passed through a file.
+function logExec ({stdout, stderr}) {
+  process.stdout.write(stdout)
+  // We exit Electron with code 0 to avoid annoying nagging on next startup.
+  // Non-empty stderr means there was an error.
+  if (stderr.length) throw stderr
 }
