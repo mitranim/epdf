@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "Render any URL to PDF using Electron",
   "author": "Nelo Mitranim <me@mitranim.com>",
-  "main": "index.js",
+  "main": "lib/index.js",
   "bin": {
     "epdf": "bin/cli.js"
   },

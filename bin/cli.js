@@ -2,8 +2,8 @@
 'use strict'
 
 const args = require('yargs').argv
-const {omitBy, yargsSpecialKey} = require('../utils')
-const {render} = require('../')
+const {omitBy, yargsSpecialKey} = require('../lib/utils')
+const {render} = require('../lib')
 
 const toStdout = !args.out
 
