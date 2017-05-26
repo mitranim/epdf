@@ -374,9 +374,9 @@ electron-download@^3.0.1:
     semver "^5.3.0"
     sumchecker "^1.2.0"
 
-electron@^1.6.8:
-  version "1.6.8"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.6.8.tgz#41cbbe7272ccd93339c040f856c0d6372a4ddb07"
+electron@1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.6.6.tgz#17df8cdf73ec2c04cfad7abb413579b8b8dafc28"
   dependencies:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
@@ -1285,9 +1285,9 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
-posterus@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/posterus/-/posterus-0.0.2.tgz#79a2185b70b646663189416b66a4518254df09cf"
+posterus@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/posterus/-/posterus-0.0.4.tgz#06e031e9f961180d15a467b975bea56e14d0f510"
   dependencies:
     fastqueue "^0.1.0"
 
