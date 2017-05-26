@@ -1,6 +1,6 @@
 {
   "name": "epdf",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Render any URL to PDF using Electron",
   "author": "Nelo Mitranim <me@mitranim.com>",
   "main": "lib/index.js",
