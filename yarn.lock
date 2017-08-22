@@ -1290,9 +1290,9 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
-posterus@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/posterus/-/posterus-0.0.4.tgz#06e031e9f961180d15a467b975bea56e14d0f510"
+posterus@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/posterus/-/posterus-0.1.0.tgz#0f2fb53ba068cb77016691c4b3d60fa2df716b53"
   dependencies:
     fastqueue "^0.1.0"
 
