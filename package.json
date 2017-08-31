@@ -1,6 +1,6 @@
 {
   "name": "epdf",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Render any URL to PDF using Electron",
   "author": "Nelo Mitranim <me@mitranim.com>",
   "main": "lib/index.js",
@@ -16,7 +16,7 @@
   "dependencies": {
     "del": "^2.2.2",
     "electron": "^1.6.10",
-    "posterus": "0.1.0",
+    "posterus": "^0.1.1",
     "yargs": "^8.0.1"
   },
   "devDependencies": {
