@@ -2,12 +2,14 @@
 'use strict'
 
 const args = require('yargs').argv
-const {omitBy, yargsSpecialKey} = require('../lib/utils')
+const {onlyNamedArgs} = require('../lib/utils')
 const {render} = require('../lib')
 
-const toStdout = !args.out
+const positionalArgs = args._
+const namedArgs = onlyNamedArgs(args)
+const toStdout = !namedArgs.out
 
-render(omitBy(yargsSpecialKey, args))
+render(positionalArgs, namedArgs)
   .mapResult(out => {
     if (toStdout && out) process.stdout.write(out)
     process.exitCode = 0
