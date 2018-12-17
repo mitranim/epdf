@@ -36,8 +36,8 @@ render({url: 'https://my-awesome-website' /* other settings */})
 install).
 
 The value returned by `render` can be used as a promise, but is actually a
-[`Future`](https://github.com/Mitranim/posterus#future) from the
-[Posterus](https://github.com/Mitranim/posterus) library. You can stop it by
+[`Future`](https://github.com/mitranim/posterus#future) from the
+[Posterus](https://github.com/mitranim/posterus) library. You can stop it by
 calling `.deinit()`, which immediately closes the Electron process.
 
 ```js
